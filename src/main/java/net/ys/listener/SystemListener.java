@@ -29,7 +29,7 @@ public class SystemListener implements ServletContextListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println("system contextDestroyed------------------");
+        System.out.println("--- system contextDestroyed ---");
     }
 
     @Override
@@ -37,6 +37,6 @@ public class SystemListener implements ServletContextListener {
         EtlService etlService = ApplicationContextUtil.getBean("etlService", EtlService.class);
         etlService.restartEtlJob();
         etlService.restartApiJob();
-        System.out.println("system contextInitialized");
+        System.out.println("--- system contextInitialized ---");
     }
 }
