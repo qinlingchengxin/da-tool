@@ -624,8 +624,6 @@ public class EtlService {
             sqlStr = sql.toString();
         }
 
-        LogUtil.debug(sqlStr);
-
         if (dbType == DbType.MY_SQL.type) {
             return DBUtil.addDataStepMysql(connectionDes, sqlStr, data);
         } else if (dbType == DbType.ORACLE.type) {//不会覆盖，待完善
