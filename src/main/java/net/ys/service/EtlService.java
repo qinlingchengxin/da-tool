@@ -452,9 +452,9 @@ public class EtlService {
             quotLeft = "`";
             quotRight = "`";
 
-            sqlSelect = new StringBuffer("SELECT ").append(quotLeft).append(fields.get(0).getSrcFieldName()).append(quotRight);
+            sqlSelect = new StringBuffer("SELECT ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(".").append(quotLeft).append(fields.get(0).getSrcFieldName()).append(quotRight);
             for (int i = 1; i < fields.size(); i++) {
-                sqlSelect.append(", ").append(quotLeft).append(fields.get(i).getSrcFieldName()).append(quotRight);
+                sqlSelect.append(", ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(".").append(quotLeft).append(fields.get(i).getSrcFieldName()).append(quotRight);
             }
             sqlSelect.append(" FROM ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(" WHERE SYS__CREATE_OR_UPDATE_TIME BETWEEN ? AND ? ORDER BY SYS__CREATE_OR_UPDATE_TIME, ").append(quotLeft).append(entity.getSrcPrimaryKey()).append(quotRight).append(" LIMIT ?,?");
             sqlCount = new StringBuffer("SELECT COUNT(*) AS C FROM ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(" WHERE SYS__CREATE_OR_UPDATE_TIME BETWEEN ? AND ?");
@@ -462,9 +462,9 @@ public class EtlService {
             quotLeft = "\"";
             quotRight = "\"";
 
-            sqlSelect = new StringBuffer("SELECT * FROM ( SELECT T1.*, ROWNUM AS ORACLE___RW FROM (SELECT ").append(quotLeft).append(fields.get(0).getSrcFieldName()).append(quotRight);
+            sqlSelect = new StringBuffer("SELECT * FROM ( SELECT T1.*, ROWNUM AS ORACLE___RW FROM (SELECT ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(".").append(quotLeft).append(fields.get(0).getSrcFieldName()).append(quotRight);
             for (int i = 1; i < fields.size(); i++) {
-                sqlSelect.append(", ").append(quotLeft).append(fields.get(i).getSrcFieldName()).append(quotRight);
+                sqlSelect.append(", ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(".").append(quotLeft).append(fields.get(i).getSrcFieldName()).append(quotRight);
             }
             sqlSelect.append(" FROM ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(" WHERE to_char(SYS__CREATE_OR_UPDATE_TIME,'yyyy-mm-dd HH24:mi:ss') BETWEEN ? AND ? ORDER BY SYS__CREATE_OR_UPDATE_TIME, ").append(quotLeft).append(entity.getSrcPrimaryKey()).append(quotRight).append(") T1) T2 WHERE T2.ORACLE___RW >= ? AND T2.ORACLE___RW < ? ");
             sqlCount = new StringBuffer("SELECT COUNT(*) AS C FROM ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(" WHERE to_char(SYS__CREATE_OR_UPDATE_TIME,'yyyy-mm-dd HH24:mi:ss') BETWEEN ? AND ?");
@@ -472,9 +472,9 @@ public class EtlService {
             quotLeft = "[";
             quotRight = "]";
 
-            sqlSelect = new StringBuffer("SELECT ").append(quotLeft).append(fields.get(0).getSrcFieldName()).append(quotRight).append(" ");
+            sqlSelect = new StringBuffer("SELECT ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(".").append(quotLeft).append(fields.get(0).getSrcFieldName()).append(quotRight).append(" ");
             for (int i = 1; i < fields.size(); i++) {
-                sqlSelect.append(", ").append(quotLeft).append(fields.get(i).getSrcFieldName()).append(quotRight).append(" ");
+                sqlSelect.append(", ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(".").append(quotLeft).append(fields.get(i).getSrcFieldName()).append(quotRight).append(" ");
             }
             sqlSelect.append(" FROM ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(" WHERE SYS__CREATE_OR_UPDATE_TIME BETWEEN ? AND ? ORDER BY SYS__CREATE_OR_UPDATE_TIME, ").append(quotLeft).append(entity.getSrcPrimaryKey()).append(quotRight).append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY");
             sqlCount = new StringBuffer("SELECT COUNT(*) AS C FROM ").append(quotLeft).append(entity.getSrcTabName()).append(quotRight).append(" WHERE SYS__CREATE_OR_UPDATE_TIME BETWEEN ? AND ?");
