@@ -109,10 +109,11 @@ public class DBUtil {
             String columnType;
             Clob clob;
             while (rs.next()) {
-                map = new LinkedHashMap<String, Object>();
+                map = new LinkedHashMap<>();
                 metaData = rs.getMetaData();
                 columnCount = metaData.getColumnCount();
                 for (int i = 1; i <= columnCount; i++) {
+                    String columnName = metaData.getColumnLabel(i);//获取AS的值，eg: `admin`.`PWD` AS `PWD_a6614084` 获取的是PWD_a6614084
                     columnType = metaData.getColumnTypeName(i);
                     if ("CLOB".equals(columnType)) {
                         clob = rs.getClob(i);
@@ -122,7 +123,7 @@ public class DBUtil {
                     } else {
                         o = rs.getObject(i);
                     }
-                    map.put(metaData.getColumnName(i), o);
+                    map.put(columnName, o);
                 }
                 data.add(map);
             }
