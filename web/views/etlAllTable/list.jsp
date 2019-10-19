@@ -26,8 +26,8 @@
             <table>
                 <tr>
                     <th width="4%">序号</th>
-                    <th width="16%">名称</th>
-                    <th width="16%">说明</th>
+                    <th width="30%">名称</th>
+                    <th width="30%">说明</th>
                     <th style="text-align: center;">操作</th>
                 </tr>
                 <c:forEach items="${etlAllTables}" var="etlAllTable" varStatus="vs">
