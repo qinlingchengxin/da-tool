@@ -47,14 +47,14 @@
                         <li><a href="#">上一页</a></li>
                     </c:if>
                     <c:if test="${currPage > 1}">
-                        <li><a href="${baseUrl}/web/etl/eltAllTables.do?dsId=${dsId}&page=${currPage - 1}">上一页</a></li>
+                        <li><a href="${baseUrl}/web/etl/etlAllTables.do?dsId=${dsId}&page=${currPage - 1}">上一页</a></li>
                     </c:if>
                     <li id="currPage">${currPage}</li>
                     <c:if test="${currPage >= totalPage}">
                         <li><a href="#">下一页</a></li>
                     </c:if>
                     <c:if test="${currPage < totalPage}">
-                        <li><a href="${baseUrl}/web/etl/eltAllTables.do?dsId=${dsId}&page=${currPage + 1}">下一页</a></li>
+                        <li><a href="${baseUrl}/web/etl/etlAllTables.do?dsId=${dsId}&page=${currPage + 1}">下一页</a></li>
                     </c:if>
                 </ul>
             </div>
