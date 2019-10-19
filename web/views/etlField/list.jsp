@@ -47,8 +47,8 @@
             <table>
                 <tr>
                     <th width="4%">序号</th>
-                    <th width="15%">原字段名</th>
-                    <th width="15%">目标字段</th>
+                    <th width="20%">原字段名</th>
+                    <th width="20%">目标字段</th>
                     <th width="12%">创建时间</th>
                     <th style="text-align: center;">操作</th>
                 </tr>
