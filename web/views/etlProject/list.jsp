@@ -58,9 +58,9 @@
             <table>
                 <tr>
                     <th width="4%">序号</th>
-                    <th width="20%">名称</th>
-                    <th width="20%">源数据库</th>
-                    <th width="20%">目标数据库</th>
+                    <th width="12%">名称</th>
+                    <th width="12%">源数据库</th>
+                    <th width="12%">目标数据库</th>
                     <th width="10%">创建时间</th>
                     <th style="text-align: center;">操作</th>
                 </tr>

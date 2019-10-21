@@ -52,7 +52,7 @@
             <table>
                 <tr>
                     <th width="4%">序号</th>
-                    <th width="10%">源名称</th>
+                    <th width="10%">名称</th>
                     <th width="10%">类型</th>
                     <th width="14%">IP:端口</th>
                     <th width="10%">数据库名称</th>

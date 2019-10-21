@@ -116,10 +116,10 @@
             <table>
                 <tr>
                     <th width="4%">序号</th>
-                    <th width="20%" class="self_th_td">原表名</th>
-                    <th width="20%" class="self_th_td">目标表名</th>
-                    <th width="12%">原表主键</th>
-                    <th width="12%">目标表主键</th>
+                    <th width="12%" class="self_th_td">原表名</th>
+                    <th width="12%" class="self_th_td">目标表名</th>
+                    <th width="10%">原表主键</th>
+                    <th width="10%">目标表主键</th>
                     <th width="10%">创建时间</th>
                     <th style="text-align: center;">操作</th>
                 </tr>
