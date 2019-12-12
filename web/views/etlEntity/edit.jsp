@@ -110,7 +110,72 @@
                 selNode.val(srcField);
             }
         }
+
+        $(function () {
+
+            // 任务类型默认为循环，显示循环需要显示的时间选择
+            var scheduleType = "${etlEntity.scheduleType}";
+            if (scheduleType && 0 != scheduleType) {
+                doChangeTimeShow(scheduleType);
+            } else {
+                $(".fixedHour").hide();
+                $(".fixedMinute").hide();
+                $(".fixedWeekday").hide();
+                $(".fixedDay").hide();
+            }
+        });
+
+        // “任务类型”改变时，时间选择的显示与隐藏
+        function changeTimeShow(ele) {
+            var scheduleType = ele.value;
+            doChangeTimeShow(scheduleType);
+        }
+        function doChangeTimeShow(scheduleType) {
+            if (1 == scheduleType) {
+                // 循环
+                $(".intervalMinute").show();
+                $(".intervalSecond").show();
+                $(".fixedHour").hide();
+                $(".fixedMinute").hide();
+                $(".fixedWeekday").hide();
+                $(".fixedDay").hide();
+            } else if (2 == scheduleType) {
+                // 天
+                $(".fixedHour").show();
+                $(".fixedMinute").show();
+                $(".intervalSecond").hide();
+                $(".intervalMinute").hide();
+                $(".fixedWeekday").hide();
+                $(".fixedDay").hide();
+            } else if (3 == scheduleType) {
+                // 周
+                $(".fixedWeekday").show();
+                $(".fixedHour").show();
+                $(".fixedMinute").show();
+                $(".intervalSecond").hide();
+                $(".intervalMinute").hide();
+                $(".fixedDay").hide();
+            } else if (4 == scheduleType) {
+                // 月
+                $(".fixedDay").show();
+                $(".fixedHour").show();
+                $(".fixedMinute").show();
+                $(".intervalSecond").hide();
+                $(".intervalMinute").hide();
+                $(".fixedWeekday").hide();
+            }
+        }
     </script>
+
+    <style type="text/css">
+        hr {
+            background-color: #e6e6e6;
+            height: 1px;
+            margin: 10px 0;
+            border: 0;
+            clear: both;
+        }
+    </style>
 </head>
 <body>
 <div class="content clearfloat">
@@ -164,16 +229,64 @@
                     </select>
                 </div>
 
+                <hr/>
+
                 <div>
-                    <span class="title">是否重复执行</span>
-                    <select id="doc-ipt-repeat-1" name="repeat">
-                        <option value="0" <c:if test="${etlEntity.repeat == 0}">selected="selected"</c:if>>否</option>
-                        <option value="1" <c:if test="${etlEntity.repeat == 1}">selected="selected"</c:if>>是</option>
+                    <span class="title">任务类型</span>
+                    <select id="doc-ipt-scheduleType-1" name="scheduleType" onchange="changeTimeShow(this)">
+                        <option value="1" <c:if test="${etlEntity.scheduleType == 1}">selected="selected"</c:if>>循环</option>
+                        <option value="2" <c:if test="${etlEntity.scheduleType == 2}">selected="selected"</c:if>>天</option>
+                        <option value="3" <c:if test="${etlEntity.scheduleType == 3}">selected="selected"</c:if>>周</option>
+                        <option value="4" <c:if test="${etlEntity.scheduleType == 4}">selected="selected"</c:if>>月</option>
+                    </select>
+                </div>
+
+                <div>
+
+                    <span class="fixedWeekday title">周</span>
+                    <select class="fixedWeekday" id="doc-ipt-fixedWeekday-1" name="fixedWeekday">
+                        <option value="0" <c:if test="${etlEntity.fixedWeekday == 0}">selected="selected"</c:if>>日</option>
+                        <option value="1" <c:if test="${etlEntity.fixedWeekday == 1}">selected="selected"</c:if>>一</option>
+                        <option value="2" <c:if test="${etlEntity.fixedWeekday == 2}">selected="selected"</c:if>>二</option>
+                        <option value="3" <c:if test="${etlEntity.fixedWeekday == 3}">selected="selected"</c:if>>三</option>
+                        <option value="4" <c:if test="${etlEntity.fixedWeekday == 4}">selected="selected"</c:if>>四</option>
+                        <option value="5" <c:if test="${etlEntity.fixedWeekday == 5}">selected="selected"</c:if>>五</option>
+                        <option value="6" <c:if test="${etlEntity.fixedWeekday == 6}">selected="selected"</c:if>>六</option>
+                    </select>
+                    <span class="fixedDay title">&nbsp;</span>
+                    <select class="fixedDay" id="doc-ipt-fixedDay-1" name="fixedDay">
+                        <c:forEach begin="1" end="31" var="v">
+                            <option value="${v}" <c:if test="${etlEntity.fixedDay == v}">selected="selected"</c:if>>${v} 号</option>
+                        </c:forEach>
                     </select>
 
+                    <span class="fixedHour title">时分</span>
+                    <select class="fixedHour" id="doc-ipt-fixedHour-1" name="fixedHour">
+                        <c:forEach begin="0" end="23" var="v">
+                            <option value="${v}" <c:if test="${etlEntity.fixedHour == v}">selected="selected"</c:if>>${v}</option>
+                        </c:forEach>
+                    </select>
+                    <span class="fixedMinute">：</span>
+                    <select class="fixedMinute" id="doc-ipt-fixedMinute-1" name="fixedMinute">
+                        <c:forEach begin="0" end="59" var="v">
+                            <option value="${v}" <c:if test="${etlEntity.fixedMinute == v}">selected="selected"</c:if>>${v}</option>
+                        </c:forEach>
+                    </select>
+                    <span class="intervalMinute title">间隔分秒</span>
+                    <input class="intervalMinute" style="width: 40px;" id="doc-ipt-intervalMinute-1" type="text" name="intervalMinute" value="${etlEntity.intervalMinute}" onchange="checkNumber(this);"/>
+                    <span class="intervalMinute">：</span>
+                    <input class="intervalSecond" style="width: 40px;" id="doc-ipt-intervalSecond-1" type="text" name="intervalSecond" value="${etlEntity.intervalSecond}" onchange="checkNumber(this);"/>
+                </div>
+
+                <hr/>
+
+                <%--<div>
+
+                    <input type="hidden" name="repeat" value="1"/>
+
                     <span class="title">任务类型</span>
-                    <select id="doc-ipt-scheduleType-1" name="scheduleType">
-                        <option value="1" <c:if test="${etlEntity.scheduleType == 1}">selected="selected"</c:if>>间隔</option>
+                    <select id="doc-ipt-scheduleType-1" name="scheduleType" onchange="changeTimeShow(this)">
+                        <option value="1" <c:if test="${etlEntity.scheduleType == 1}">selected="selected"</c:if>>循环</option>
                         <option value="2" <c:if test="${etlEntity.scheduleType == 2}">selected="selected"</c:if>>天</option>
                         <option value="3" <c:if test="${etlEntity.scheduleType == 3}">selected="selected"</c:if>>周</option>
                         <option value="4" <c:if test="${etlEntity.scheduleType == 4}">selected="selected"</c:if>>月</option>
@@ -223,7 +336,7 @@
                             <option value="${v}" <c:if test="${etlEntity.fixedDay == v}">selected="selected"</c:if>>${v}</option>
                         </c:forEach>
                     </select>
-                </div>
+                </div>--%>
 
                 <div>
                     <span class="title" style="vertical-align: top;">描述</span>
