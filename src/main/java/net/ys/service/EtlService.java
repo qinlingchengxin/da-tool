@@ -152,7 +152,16 @@ public class EtlService {
     }
 
     public boolean entityDel(String id) {
-        return etlDao.entityDel(id);
+        boolean flag = etlDao.entityDel(id);
+
+        if (flag) {
+            TimerTask timerTask = jobs.get(id);
+            if (timerTask != null) {
+                timerTask.cancel();
+                jobs.remove(id);
+            }
+        }
+        return flag;
     }
 
     public boolean projectDel(String id) {
@@ -507,6 +516,46 @@ public class EtlService {
             sb.append(",?");
         }
         return sb.toString();
+    }
+
+    public long queryEtlAllFieldCount(String tabId) {
+        return etlDao.queryEtlAllFieldCount(tabId);
+    }
+
+    public List<EtlAllField> queryEtlAllFields(String tabId, int page, int pageSize) {
+        return etlDao.queryEtlAllFields(tabId, page, pageSize);
+    }
+
+    public boolean removeEtlField(String fieldId) {
+        String tableId = etlDao.queryEntityId(fieldId);
+        boolean flag = etlDao.removeEtlField(fieldId);
+        if (flag) {//检查所有用到此字段的 任务，如果有则停止任务即可并且删掉映射字段
+            if (tableId != null) {
+                etlDao.stopAllJob(tableId);
+                List<EtlEntity> etlEntityList = etlDao.queryEtlEntitiesByTableId(tableId);
+                for (EtlEntity entity : etlEntityList) {
+                    etlDao.removeEtlField(entity.getId(), fieldId);
+
+                    TimerTask timerTask = jobs.get(entity.getId());
+                    if (timerTask != null) {
+                        timerTask.cancel();
+                        jobs.remove(entity.getId());
+                    }
+                }
+            }
+        }
+        return flag;
+    }
+
+    public boolean removeEtlTable(String tableId) {
+        boolean flag = etlDao.removeEtlTable(tableId);
+        if (flag) {//检查是否有etl任务，如果有，则删除映射表和字段并且删除任务（map)
+            List<EtlEntity> etlEntityList = etlDao.queryEtlEntitiesByTableId(tableId);
+            for (EtlEntity entity : etlEntityList) {
+                entityDel(entity.getId());
+            }
+        }
+        return flag;
     }
 
     class ApiTimerTask extends TimerTask {

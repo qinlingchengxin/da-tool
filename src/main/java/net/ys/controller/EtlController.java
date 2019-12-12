@@ -717,4 +717,75 @@ public class EtlController {
             return GenResult.UNKNOWN_ERROR.genResult();
         }
     }
+
+    @RequestMapping(value = "etlAllFields")
+    public ModelAndView etlAllFields(@RequestParam(defaultValue = "") String tabId, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize) {
+        ModelAndView modelAndView = new ModelAndView("etlAllField/list");
+        if (page < 1) {
+            page = 1;
+        }
+        long count = etlService.queryEtlAllFieldCount(tabId);
+
+        long t = count / pageSize;
+        int k = count % pageSize == 0 ? 0 : 1;
+        int totalPage = (int) (t + k);
+
+        if (page > totalPage && count > 0) {
+            page = totalPage;
+        }
+
+        List<EtlAllField> etlAllFields;
+        if ((page - 1) * pageSize < count) {
+            etlAllFields = etlService.queryEtlAllFields(tabId, page, pageSize);
+        } else {
+            etlAllFields = new ArrayList<EtlAllField>();
+        }
+
+        modelAndView.addObject("count", count);
+        modelAndView.addObject("currPage", page);
+        modelAndView.addObject("totalPage", totalPage);
+        modelAndView.addObject("etlAllFields", etlAllFields);
+        modelAndView.addObject("tabId", tabId);
+        return modelAndView;
+    }
+
+    @RequestMapping(value = "etlAllField/remove")
+    @ResponseBody
+    public Map<String, Object> removeEtlField(@RequestParam(defaultValue = "") String fieldId) {
+        try {
+
+            if ("".equals(fieldId)) {
+                return GenResult.PARAMS_ERROR.genResult();
+            }
+
+            boolean flag = etlService.removeEtlField(fieldId);
+            if (flag) {
+                return GenResult.SUCCESS.genResult();
+            }
+            return GenResult.FAILED.genResult();
+        } catch (Exception e) {
+            LogUtil.error(e);
+            return GenResult.UNKNOWN_ERROR.genResult();
+        }
+    }
+
+    @RequestMapping(value = "etlAllTable/remove")
+    @ResponseBody
+    public Map<String, Object> removeEtlTable(@RequestParam(defaultValue = "") String tableId) {
+        try {
+
+            if ("".equals(tableId)) {
+                return GenResult.PARAMS_ERROR.genResult();
+            }
+
+            boolean flag = etlService.removeEtlTable(tableId);
+            if (flag) {
+                return GenResult.SUCCESS.genResult();
+            }
+            return GenResult.FAILED.genResult();
+        } catch (Exception e) {
+            LogUtil.error(e);
+            return GenResult.UNKNOWN_ERROR.genResult();
+        }
+    }
 }

@@ -160,8 +160,13 @@ public class EtlDao {
     }
 
     public boolean entityDel(String id) {
-        String sql = "DELETE FROM sys_etl_entity WHERE ID = ?";
-        return jdbcTemplate.update(sql, id) >= 0;
+        String sql = "DELETE FROM sys_etl_entity WHERE id = ?";
+        boolean flag = jdbcTemplate.update(sql, id) >= 0;
+        if (flag) {
+            sql = "DELETE FROM sys_etl_field WHERE entity_id = ?";
+            jdbcTemplate.update(sql, id);
+        }
+        return flag;
     }
 
     public boolean projectDel(String id) {
@@ -255,6 +260,11 @@ public class EtlDao {
         return jdbcTemplate.query(sql, new EtlAllFieldMapper(), tableId);
     }
 
+    public List<EtlAllField> queryEtlAllFields(String tableId, int page, int pageSize) {
+        String sql = "SELECT id, table_id, `name`, pri_key, `comment`, create_time FROM sys_etl_all_field WHERE table_id = ? LIMIT ?,?";
+        return jdbcTemplate.query(sql, new EtlAllFieldMapper(), tableId, (page - 1) * pageSize, pageSize);
+    }
+
     public void delFields(final List<String> fieldIdList) {
         String sql = "DELETE FROM `sys_etl_all_field` WHERE id = ?";
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
@@ -292,5 +302,53 @@ public class EtlDao {
     public boolean stopAllApiJob(String prjId) {
         String sql = "UPDATE sys_etl_entity SET is_api_exec = 0 WHERE prj_id = ?";
         return jdbcTemplate.update(sql, prjId) >= 0;
+    }
+
+    public long queryEtlAllFieldCount(String tabId) {
+        String sql = "SELECT COUNT(*) FROM sys_etl_all_field WHERE table_id = ?";
+        return jdbcTemplate.queryForObject(sql, Long.class, tabId);
+    }
+
+    public boolean removeEtlField(String fieldId) {
+        String sql = "DELETE FROM sys_etl_all_field WHERE id = ?";
+        return jdbcTemplate.update(sql, fieldId) >= 0;
+    }
+
+    public boolean removeEtlField(String entityId, String fieldId) {
+        String sql = "DELETE FROM sys_etl_field WHERE id = ?";
+        return jdbcTemplate.update(sql, fieldId) >= 0;
+    }
+
+    public boolean removeEtlTable(String tableId) {
+        String sql = "DELETE FROM sys_etl_all_table WHERE id = ?";
+        boolean flag = jdbcTemplate.update(sql, tableId) >= 0;
+        if (flag) {
+            sql = "DELETE FROM sys_etl_all_field WHERE table_id = ?";
+            jdbcTemplate.update(sql, tableId);
+        }
+        return flag;
+    }
+
+    public List<EtlEntity> queryEtlEntitiesByTableId(String tableId) {
+        String sql = "SELECT id, prj_id, src_tab_id, src_tab_name, des_tab_id, des_tab_name, src_primary_key, des_primary_key, description, etl_id, create_time, `repeat`, schedule_type, interval_second, interval_minute, fixed_hour, fixed_minute, fixed_weekday, fixed_day, is_exec, is_api_exec, last_trans_time, `condition` FROM sys_etl_entity WHERE src_tab_id = ? OR des_tab_id = ?";
+        return jdbcTemplate.query(sql, new EtlEntityMapper(), tableId, tableId);
+    }
+
+    public String queryEntityId(String fieldId) {
+        String sql = "SELECT table_id FROM sys_etl_all_field WHERE id = ? ";
+        List<String> list = jdbcTemplate.queryForList(sql, String.class, fieldId);
+        if (list.size() > 0) {
+            return list.get(0);
+        }
+        return null;
+    }
+
+    public void stopAllJob(String tableId) {
+        String sql = "UPDATE sys_etl_entity SET is_exec = 0, is_api_exec = 0 WHERE src_tab_id = ? OR des_tab_id = ?";
+        jdbcTemplate.update(sql, tableId, tableId);
+    }
+
+    public List<String> queryAllFieldIds(EtlEntity entity, String fieldId) {
+        return null;  //To change body of created methods use File | Settings | File Templates.
     }
 }
