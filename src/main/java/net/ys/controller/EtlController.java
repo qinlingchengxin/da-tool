@@ -541,7 +541,9 @@ public class EtlController {
             EtlProject project = etlService.queryEtlKtrProject(entityId);
 
             String etlId = entity.getEtlId();
-            boolean flag = KettleUtil.genKtrFile(entity, project, fields, etlId);//生成ktr转换文件
+            Map<String, String> dbSchema = etlService.queryDbSchema(project);
+
+            boolean flag = KettleUtil.genKtrFile(entity, project, fields, etlId, dbSchema);//生成ktr转换文件
 
             if (flag) {
                 flag = KettleUtil.genKjbFile(etlId, entity);

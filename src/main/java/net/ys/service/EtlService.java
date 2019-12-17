@@ -147,6 +147,8 @@ public class EtlService {
             flag = DBUtil.testConnOracle(etlDataSource);
         } else if (dbType == DbType.MS_SQL.type) {
             flag = DBUtil.testConnMSSQL(etlDataSource);
+        } else if (dbType == DbType.KING_BASE.type) {
+            flag = DBUtil.testConnKingBase(etlDataSource);
         }
         return flag;
     }
@@ -209,11 +211,13 @@ public class EtlService {
 
             List<DbTable> tables = null;
             if (type == DbType.MY_SQL.type) {
-                tables = DBUtil.getTablesMySql(dataSource.getDbIp(), dataSource.getDbPort(), dataSource.getDbName(), dataSource.getDbUsername(), dataSource.getDbPwd());
+                tables = DBUtil.getTablesMySql(dataSource);
             } else if (type == DbType.ORACLE.type) {
-                tables = DBUtil.getTablesOracle(dataSource.getDbIp(), dataSource.getDbPort(), dataSource.getDbName(), dataSource.getDbUsername(), dataSource.getDbPwd());
+                tables = DBUtil.getTablesOracle(dataSource);
             } else if (type == DbType.MS_SQL.type) {
-                tables = DBUtil.getTablesMSSQL(dataSource.getDbIp(), dataSource.getDbPort(), dataSource.getDbName(), dataSource.getDbUsername(), dataSource.getDbPwd());
+                tables = DBUtil.getTablesMSSQL(dataSource);
+            } else if (type == DbType.KING_BASE.type) {
+                tables = DBUtil.getTablesKingBase(dataSource);
             }
 
             if (tables != null && tables.size() > 0) {
@@ -263,7 +267,7 @@ public class EtlService {
         List<String> fieldIdList;
         if (type == DbType.MY_SQL.type) {
             for (EtlAllTable table : tables) {
-                fields = DBUtil.getFieldsMySql(dataSource.getDbIp(), dataSource.getDbPort(), dataSource.getDbName(), table, dataSource.getDbUsername(), dataSource.getDbPwd());
+                fields = DBUtil.getFieldsMySql(dataSource, table);
                 if (fields != null && fields.size() > 0) {
                     dbDao.addFields(fields);
                 }
@@ -277,7 +281,7 @@ public class EtlService {
             flag = true;
         } else if (type == DbType.ORACLE.type) {
             for (EtlAllTable table : tables) {
-                fields = DBUtil.getFieldsOracle(dataSource.getDbIp(), dataSource.getDbPort(), dataSource.getDbName(), table, dataSource.getDbUsername(), dataSource.getDbPwd());
+                fields = DBUtil.getFieldsOracle(dataSource, table);
                 if (fields != null && fields.size() > 0) {
                     dbDao.addFields(fields);
                 }
@@ -290,7 +294,20 @@ public class EtlService {
             flag = true;
         } else if (type == DbType.MS_SQL.type) {
             for (EtlAllTable table : tables) {
-                fields = DBUtil.getFieldsMSSQL(dataSource.getDbIp(), dataSource.getDbPort(), dataSource.getDbName(), table, dataSource.getDbUsername(), dataSource.getDbPwd());
+                fields = DBUtil.getFieldsMSSQL(dataSource, table);
+                if (fields != null && fields.size() > 0) {
+                    dbDao.addFields(fields);
+                }
+                etlAllFields = etlDao.queryEtlAllFields(table.getId());
+                fieldIdList = compareFields(fields, etlAllFields);
+                if (fieldIdList.size() > 0) {
+                    etlDao.delFields(fieldIdList);
+                }
+            }
+            flag = true;
+        } else if (type == DbType.KING_BASE.type) {
+            for (EtlAllTable table : tables) {
+                fields = DBUtil.getFieldsKingBase(dataSource, table);
                 if (fields != null && fields.size() > 0) {
                     dbDao.addFields(fields);
                 }
@@ -457,11 +474,11 @@ public class EtlService {
         String quotRight;
         StringBuffer sqlSelect;
         StringBuffer sqlCount;
-        List<String> alias = new ArrayList<>();
+        List<String> alias = new ArrayList<String>();
 
         for (EtlField field : fields) {
             if (alias.contains(field.getSrcFieldName())) {
-                alias.add(field.getSrcFieldName() + "_" + UUID.randomUUID().toString().substring(0, 8));
+                alias.add(field.getSrcFieldName() + "_" + UUID.randomUUID().toString().replaceAll("-", "").substring(0, 8));
             } else {
                 alias.add(field.getSrcFieldName());
             }
@@ -556,6 +573,10 @@ public class EtlService {
             }
         }
         return flag;
+    }
+
+    public Map<String, String> queryDbSchema(EtlProject project) {
+        return etlDao.queryDbSchema(project);
     }
 
     class ApiTimerTask extends TimerTask {

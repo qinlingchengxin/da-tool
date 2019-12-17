@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.annotation.Resource;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -131,12 +132,12 @@ public class EtlDao {
     }
 
     public List<EtlDataSource> queryEtlDataSources(int page, int pageSize) {
-        String sql = "SELECT id, source_name, db_type, db_ip, db_port, db_name, db_user_name, db_pwd, alive, create_time, status FROM sys_etl_data_source WHERE status = 1 LIMIT ?,?";
+        String sql = "SELECT id, source_name, db_type, db_ip, db_port, db_name, db_schema, db_user_name, db_pwd, alive, create_time, status FROM sys_etl_data_source WHERE status = 1 LIMIT ?,?";
         return jdbcTemplate.query(sql, new EtlDataSourceMapper(), (page - 1) * pageSize, pageSize);
     }
 
     public EtlDataSource queryEtlDataSource(String id) {
-        String sql = "SELECT id, source_name, db_type, db_ip, db_port, db_name, db_user_name, db_pwd, alive, create_time, `status` FROM sys_etl_data_source WHERE id = ? AND status = 1";
+        String sql = "SELECT id, source_name, db_type, db_ip, db_port, db_name, db_schema, db_user_name, db_pwd, alive, create_time, `status` FROM sys_etl_data_source WHERE id = ? AND status = 1";
         List<EtlDataSource> list = jdbcTemplate.query(sql, new EtlDataSourceMapper(), id);
         if (list.size() > 0) {
             return list.get(0);
@@ -145,14 +146,14 @@ public class EtlDao {
     }
 
     public boolean updateEtlDataSource(EtlDataSource etlDataSource) {
-        String sql = "UPDATE sys_etl_data_source SET source_name = ?, db_type = ?, db_ip = ?, db_port = ?, db_name = ?, db_user_name = ?, db_pwd = ?, alive = ? WHERE id = ?";
-        return jdbcTemplate.update(sql, etlDataSource.getSourceName(), etlDataSource.getDbType(), etlDataSource.getDbIp(), etlDataSource.getDbPort(), etlDataSource.getDbName(), etlDataSource.getDbUsername(), etlDataSource.getDbPwd(), etlDataSource.getAlive(), etlDataSource.getId()) >= 0;
+        String sql = "UPDATE sys_etl_data_source SET source_name = ?, db_type = ?, db_ip = ?, db_port = ?, db_name = ?, db_schema = ?, db_user_name = ?, db_pwd = ?, alive = ? WHERE id = ?";
+        return jdbcTemplate.update(sql, etlDataSource.getSourceName(), etlDataSource.getDbType(), etlDataSource.getDbIp(), etlDataSource.getDbPort(), etlDataSource.getDbName(), etlDataSource.getDbSchema(), etlDataSource.getDbUsername(), etlDataSource.getDbPwd(), etlDataSource.getAlive(), etlDataSource.getId()) >= 0;
     }
 
     public EtlDataSource addEtlDataSource(EtlDataSource etlDataSource) {
         etlDataSource.setId(UUID.randomUUID().toString());
-        String sql = "INSERT INTO sys_etl_data_source ( id, source_name, db_type, db_ip, db_port, db_name, db_user_name, db_pwd, alive, create_time ) VALUES (?,?,?,?,?,?,?,?,?,?)";
-        boolean flag = jdbcTemplate.update(sql, etlDataSource.getId(), etlDataSource.getSourceName(), etlDataSource.getDbType(), etlDataSource.getDbIp(), etlDataSource.getDbPort(), etlDataSource.getDbName(), etlDataSource.getDbUsername(), etlDataSource.getDbPwd(), etlDataSource.getAlive(), System.currentTimeMillis()) > 0;
+        String sql = "INSERT INTO sys_etl_data_source ( id, source_name, db_type, db_ip, db_port, db_name, db_schema, db_user_name, db_pwd, alive, create_time ) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+        boolean flag = jdbcTemplate.update(sql, etlDataSource.getId(), etlDataSource.getSourceName(), etlDataSource.getDbType(), etlDataSource.getDbIp(), etlDataSource.getDbPort(), etlDataSource.getDbName(), etlDataSource.getDbSchema(), etlDataSource.getDbUsername(), etlDataSource.getDbPwd(), etlDataSource.getAlive(), System.currentTimeMillis()) > 0;
         if (flag) {
             return etlDataSource;
         }
@@ -348,7 +349,16 @@ public class EtlDao {
         jdbcTemplate.update(sql, tableId, tableId);
     }
 
-    public List<String> queryAllFieldIds(EtlEntity entity, String fieldId) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+    public Map<String, String> queryDbSchema(EtlProject project) {
+        String sql = "SELECT seds_src.db_schema src_db_schema, seds_des.db_schema des_db_schema FROM sys_etl_project sep LEFT JOIN sys_etl_data_source seds_src ON seds_src.id = sep.src_db_id LEFT JOIN sys_etl_data_source seds_des ON seds_des.id = sep.des_db_id WHERE sep.id = ?";
+        List<Map<String, Object>> list = jdbcTemplate.queryForList(sql, project.getId());
+        if (list.size() > 0) {
+            Map<String, Object> map = list.get(0);
+            Map<String, String> result = new HashMap<String, String>();
+            result.put("src_db_schema", String.valueOf(map.get("src_db_schema")));
+            result.put("des_db_schema", String.valueOf(map.get("des_db_schema")));
+            return result;
+        }
+        return null;
     }
 }

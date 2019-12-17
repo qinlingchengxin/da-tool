@@ -69,6 +69,7 @@
                             <c:if test="${dataSource.dbType == 0}">MySql</c:if>
                             <c:if test="${dataSource.dbType == 1}">Oracle</c:if>
                             <c:if test="${dataSource.dbType == 2}">MS SQL</c:if>
+                            <c:if test="${dataSource.dbType == 3}">KING BASE</c:if>
                         </td>
                         <td>${dataSource.dbIp}:${dataSource.dbPort}</td>
                         <td>${dataSource.dbName}</td>

@@ -23,7 +23,7 @@ public class DbDao {
     private JdbcTemplate jdbcTemplate;
 
     public List<EtlDataSource> queryDataSources() {
-        String sql = "SELECT `id`, `source_name`, `db_type`, `db_ip`, `db_port`, `db_name`, `db_user_name`, `db_pwd`, `alive`, `create_time`, `status` FROM sys_etl_data_source WHERE `status` = 1 AND alive = 1";
+        String sql = "SELECT `id`, `source_name`, `db_type`, `db_ip`, `db_port`, `db_name`, `db_schema`, `db_user_name`, `db_pwd`, `alive`, `create_time`, `status` FROM sys_etl_data_source WHERE `status` = 1 AND alive = 1";
         return jdbcTemplate.query(sql, new EtlDataSourceMapper());
     }
 

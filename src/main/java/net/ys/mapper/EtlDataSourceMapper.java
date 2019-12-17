@@ -16,6 +16,7 @@ public class EtlDataSourceMapper implements RowMapper<EtlDataSource> {
         dataSource.setDbIp(resultSet.getString("db_ip"));
         dataSource.setDbPort(resultSet.getInt("db_port"));
         dataSource.setDbName(resultSet.getString("db_name"));
+        dataSource.setDbSchema(resultSet.getString("db_schema"));
         dataSource.setDbUsername(resultSet.getString("db_user_name"));
         dataSource.setDbPwd(resultSet.getString("db_pwd"));
         dataSource.setAlive(resultSet.getInt("alive"));

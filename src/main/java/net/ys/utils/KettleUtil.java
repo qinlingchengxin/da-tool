@@ -40,7 +40,7 @@ public class KettleUtil {
     /**
      * 生成ktr文件
      */
-    public static boolean genKtrFile(EtlEntity entity, EtlProject project, List<EtlField> fields, String transName) {
+    public static boolean genKtrFile(EtlEntity entity, EtlProject project, List<EtlField> fields, String transName, Map<String, String> dbSchema) {
         try {
             KettleEnvironment.init();
 
@@ -48,15 +48,15 @@ public class KettleUtil {
             String quotesRight;
             int cdtI = project.getCenterDbType();
             TransMeta transMeta = new TransMeta();
-            String cdt = project.getCenterDbType() == 0 ? "MySql" : project.getCenterDbType() == 1 ? "Oracle" : "MSSQL";
-            DatabaseMeta srcDbMeta = new DatabaseMeta("src_db", cdt, "Native", project.getCenterDbIp(), project.getCenterDbName(), project.getCenterDbPort(), project.getCenterDbUsername(), project.getCenterDbPwd());
+            DbType centerDbType = DbType.fromType(project.getCenterDbType());
+            DatabaseMeta srcDbMeta = new DatabaseMeta("src_db", centerDbType.desc, "Native", project.getCenterDbIp(), project.getCenterDbName(), project.getCenterDbPort(), project.getCenterDbUsername(), project.getCenterDbPwd());
             Properties properties = srcDbMeta.getAttributes();
 
             if (DbType.MY_SQL.type == cdtI) {
                 quotesLeft = "`";
                 quotesRight = "`";
                 properties.setProperty("EXTRA_OPTION_MYSQL.characterEncoding", "utf8");
-            } else if (DbType.ORACLE.type == cdtI) {
+            } else if ((DbType.ORACLE.type == cdtI) || (cdtI == DbType.KING_BASE.type)) {
                 quotesLeft = "\"";
                 quotesRight = "\"";
                 properties.setProperty("EXTRA_OPTION_ORACLE.characterEncoding", "utf8");
@@ -70,10 +70,10 @@ public class KettleUtil {
             transMeta.addDatabase(srcDbMeta);
 
             int bdtI = project.getBusDbType();
-            String bdt = project.getBusDbType() == 0 ? "MySql" : project.getBusDbType() == 1 ? "Oracle" : "MSSQL";
-            DatabaseMeta desDbMeta = new DatabaseMeta("des_db", bdt, "Native", project.getBusDbIp(), project.getBusDbName(), project.getBusDbPort(), project.getBusDbUsername(), project.getBusDbPwd());
+            DbType busDbType = DbType.fromType(project.getBusDbType());
+            DatabaseMeta desDbMeta = new DatabaseMeta("des_db", busDbType.desc, "Native", project.getBusDbIp(), project.getBusDbName(), project.getBusDbPort(), project.getBusDbUsername(), project.getBusDbPwd());
             properties = desDbMeta.getAttributes();
-            if (DbType.MY_SQL.type == bdtI) {
+            if ((DbType.MY_SQL.type == bdtI) || (bdtI == DbType.KING_BASE.type)) {
                 properties.setProperty("EXTRA_OPTION_MYSQL.characterEncoding", "utf8");
             } else if (DbType.ORACLE.type == bdtI) {
                 properties.setProperty("EXTRA_OPTION_ORACLE.characterEncoding", "utf8");
@@ -103,7 +103,12 @@ public class KettleUtil {
                 selectSql.append(", ").append(quotesLeft).append(fields.get(i).getSrcFieldName()).append(quotesRight);
             }
 
-            selectSql.append(" FROM ").append(quotesLeft).append(entity.getSrcTabName()).append(quotesRight).append(" WHERE 1=1 ");
+            selectSql.append(" FROM ");
+            if (cdtI == DbType.KING_BASE.type) {
+                selectSql.append(quotesLeft).append(dbSchema.get("src_db_schema")).append(quotesRight).append(".");
+            }
+
+            selectSql.append(quotesLeft).append(entity.getSrcTabName()).append(quotesRight).append(" WHERE 1=1 ");
 
             String condition = entity.getCondition();
             if (StringUtils.isNotBlank(condition)) {

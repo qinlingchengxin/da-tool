@@ -20,6 +20,8 @@ public class EtlDataSource implements Serializable {
 
     private String dbName;
 
+    private String dbSchema; //金仓数据库特有的模式例如：PUBLIC/CENTER
+
     private String dbUsername;
 
     private String dbPwd;
@@ -116,5 +118,13 @@ public class EtlDataSource implements Serializable {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getDbSchema() {
+        return dbSchema;
+    }
+
+    public void setDbSchema(String dbSchema) {
+        this.dbSchema = dbSchema;
     }
 }

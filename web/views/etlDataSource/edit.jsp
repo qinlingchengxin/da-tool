@@ -75,12 +75,25 @@
             var portNode = $("#doc-ipt-dbPort-1");
             if (val == 0) {
                 portNode.val(3306);
+                $("#div_dbSchema").hide();
             } else if (val == 1) {
                 portNode.val(1521);
-            } else {
+                $("#div_dbSchema").hide();
+            } else if (val == 2) {
                 portNode.val(1433);
+                $("#div_dbSchema").hide();
+            } else {
+                portNode.val(54321);
+                $("#div_dbSchema").show();
             }
         }
+
+        $(function () {
+            var dbType = "${dataSource.dbType}";
+            if (dbType == 3) {
+                $("#div_dbSchema").show();
+            }
+        });
     </script>
 
     <style type="text/css">
@@ -113,7 +126,8 @@
                     <select id="doc-ipt-dbType-1" name="dbType" onchange="chPort(this.value);">
                         <option value="0" <c:if test="${dataSource.dbType == 0}">selected="selected"</c:if>>MySql</option>
                         <option value="1" <c:if test="${dataSource.dbType == 1}">selected="selected"</c:if>>Oracle</option>
-                        <%--<option value="2" <c:if test="${dataSource.dbType == 2}">selected="selected"</c:if>>MS SQL</option>--%>
+                        <option value="2" <c:if test="${dataSource.dbType == 2}">selected="selected"</c:if>>MS SQL</option>
+                        <option value="3" <c:if test="${dataSource.dbType == 3}">selected="selected"</c:if>>KING BASE</option>
                     </select>
                 </div>
 
@@ -130,6 +144,11 @@
                 <div>
                     <span class="title_self">数据库名称</span>
                     <input id="doc-ipt-dbName-1" type="text" name="dbName" value="${dataSource.dbName}"/>
+                </div>
+
+                <div id="div_dbSchema" style="display: none;">
+                    <span class="title_self">数据库模式</span>
+                    <input id="doc-ipt-dbSchema-1" type="text" name="dbSchema" value="${dataSource.dbSchema}"/>
                 </div>
 
                 <div>
