@@ -1,6 +1,7 @@
 package net.ys.controller;
 
 import net.ys.bean.*;
+import net.ys.constant.DbType;
 import net.ys.constant.GenResult;
 import net.ys.constant.SysRegex;
 import net.ys.service.EtlService;
@@ -74,6 +75,11 @@ public class EtlController {
     @RequestMapping(value = "dataSourceSave")
     @ResponseBody
     public Map<String, Object> dataSourceSave(EtlDataSource etlDataSource) {
+
+        if (etlDataSource.getDbType() == DbType.KING_BASE.type && StringUtils.isBlank(etlDataSource.getDbSchema())) {
+            return GenResult.PARAMS_ERROR.genResult();
+        }
+
         boolean flag = etlService.updateEtlDataSource(etlDataSource);
         if (!flag) {
             return GenResult.FAILED.genResult();
@@ -88,6 +94,11 @@ public class EtlController {
     @ResponseBody
     public Map<String, Object> dataSourceAdd(EtlDataSource etlDataSource) {
         try {
+
+            if (etlDataSource.getDbType() == DbType.KING_BASE.type && StringUtils.isBlank(etlDataSource.getDbSchema())) {
+                return GenResult.PARAMS_ERROR.genResult();
+            }
+
             etlDataSource = etlService.addEtlDataSource(etlDataSource);
             if (etlDataSource == null) {
                 return GenResult.FAILED.genResult();

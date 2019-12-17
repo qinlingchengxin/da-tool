@@ -283,8 +283,8 @@ public class DBUtil {
         PreparedStatement statement = null;
         ResultSet rs = null;
         try {
-            Class.forName("com.kingbase8.Driver");
-            String url = "jdbc:kingbase8://" + dataSource.getDbIp() + ":" + dataSource.getDbPort() + "/" + dataSource.getDbName();
+            Class.forName("com.kingbase.Driver");
+            String url = "jdbc:kingbase://" + dataSource.getDbIp() + ":" + dataSource.getDbPort() + "/" + dataSource.getDbName();
             connection = DriverManager.getConnection(url, dataSource.getDbUsername(), dataSource.getDbPwd());
             statement = connection.prepareStatement("SELECT \"table_name\" AS \"TABLE_NAME\", \"table_name\" AS \"TABLE_COMMENT\" FROM \"information_schema\".\"TABLES\" WHERE \"table_type\" = 'BASE TABLE' AND \"table_schema\" = ?");
             statement.setString(1, dataSource.getDbSchema());
@@ -521,8 +521,8 @@ public class DBUtil {
         PreparedStatement statement = null;
         ResultSet rs = null;
         try {
-            Class.forName("com.kingbase8.Driver");
-            String url = "jdbc:kingbase8://" + dataSource.getDbIp() + ":" + dataSource.getDbPort() + "/" + dataSource.getDbName();
+            Class.forName("com.kingbase.Driver");
+            String url = "jdbc:kingbase://" + dataSource.getDbIp() + ":" + dataSource.getDbPort() + "/" + dataSource.getDbName();
             connection = DriverManager.getConnection(url, dataSource.getDbUsername(), dataSource.getDbPwd());
 
             statement = connection.prepareStatement("SELECT \"column_name\" AS COLUMN_NAME, \"column_name\" AS COLUMN_COMMENT, 0 AS PRI_KEY FROM \"information_schema\".\"COLUMNS\" WHERE \"table_schema\" = ? AND \"table_name\" = ?");
@@ -644,8 +644,8 @@ public class DBUtil {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            Class.forName("com.kingbase8.Driver");
-            String url = "jdbc:kingbase8://" + etlDataSource.getDbIp() + ":" + etlDataSource.getDbPort() + "/" + etlDataSource.getDbName();
+            Class.forName("com.kingbase.Driver");
+            String url = "jdbc:kingbase://" + etlDataSource.getDbIp() + ":" + etlDataSource.getDbPort() + "/" + etlDataSource.getDbName();
             connection = DriverManager.getConnection(url, etlDataSource.getDbUsername(), etlDataSource.getDbPwd());
             connection.close();
             return true;
