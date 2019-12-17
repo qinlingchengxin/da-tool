@@ -8,16 +8,14 @@
         mysql:
             添加字段：
                 ALTER TABLE `person` ADD COLUMN `SYS__CREATE_OR_UPDATE_TIME` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP() ON UPDATE CURRENT_TIMESTAMP;
-            添加索引：
-                ALTER TABLE `person` ADD INDEX `idx_person_scout` (`SYS__CREATE_OR_UPDATE_TIME`) USING BTREE ;
 
         oracle:
             添加字段：ALTER TABLE "PERSON" ADD ( "SYS__CREATE_OR_UPDATE_TIME" TIMESTAMP(0)  DEFAULT sysdate NULL);
-            添加索引：CREATE INDEX "idx_person_scout" ON "PERSON" ("SYS__CREATE_OR_UPDATE_TIME" ASC);
             添加触发器：CREATE OR REPLACE TRIGGER trigger_name BEFORE UPDATE ON PERSON FOR EACH ROW BEGIN :NEW.SYS__CREATE_OR_UPDATE_TIME := SYSDATE ; END ;
 
     4、目前对Oracle和Mysql支持良好，对Sql server不良好
 
-    5、在用户家目录下新建.kettle文件夹，将kettle.properties文件拷贝进去
-    6、maven私库需要添加kettle的相关私库镜像：
+    5、maven私库需要添加kettle的相关私库镜像：
         http://nexus.pentaho.org/content/groups/omni/
+    6、由于添加了etl对金仓的支持，默认只能使用jdk1.7
+
