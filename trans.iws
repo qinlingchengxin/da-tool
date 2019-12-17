@@ -2,10 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/net/ys/utils/KettleUtil.java" afterPath="$PROJECT_DIR$/src/main/java/net/ys/utils/KettleUtil.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/trans.iws" afterPath="$PROJECT_DIR$/trans.iws" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/trans.sql" afterPath="$PROJECT_DIR$/trans.sql" />
     </list>
-    <file path="/Dummy.txt" changelist="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" time="1576562019625" ignored="false" />
+    <file path="/Dummy.txt" changelist="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" time="1576562213130" ignored="false" />
     <file path="/EtlService.java" changelist="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" time="1576550884371" ignored="false" />
     <file path="/DBUtil.java" changelist="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" time="1576549628862" ignored="false" />
     <file path="/TTT.java" changelist="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" time="1571461129281" ignored="false" />
@@ -27,6 +27,8 @@
     <file path="/EtlDataSource.java" changelist="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" time="1576488256594" ignored="false" />
     <file path="/EtlDataSourceMapper.java" changelist="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" time="1576488294503" ignored="false" />
     <file path="/DbService.java" changelist="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" time="1576548286716" ignored="false" />
+    <file path="$PROJECT_DIR$/../decenter_ah/admin/src/main/java/net/ys/service/UserService.java" changelist="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" time="1576562358905" ignored="false" />
+    <file path="$PROJECT_DIR$/../decenter_ah/admin/src/main/java/net/ys/dao/UserDao.java" changelist="e54a0e4a-4824-4c1e-b579-efa9f6ed9605" time="1576562358905" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -314,10 +316,22 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="KettleUtil.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="KettleUtil.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/net/ys/utils/KettleUtil.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="104" column="0" selection-start="4641" selection-end="4641" vertical-scroll-proportion="-0.071633235">
+            <state line="35" column="13" selection-start="1192" selection-end="1192" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="trans.sql" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/trans.sql">
+          <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+            <state />
+          </provider>
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="8" column="29" selection-start="197" selection-end="197" vertical-scroll-proportion="0.33500838">
               <folding />
             </state>
           </provider>
@@ -351,7 +365,6 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/web/views/etlAllField/list.jsp" />
         <option value="$PROJECT_DIR$/web/views/etlAllTable/list.jsp" />
         <option value="$PROJECT_DIR$/web/views/etlEntity/edit.jsp" />
         <option value="$PROJECT_DIR$/src/main/java/net/ys/bean/EtlEntity.java" />
@@ -367,6 +380,7 @@
         <option value="$PROJECT_DIR$/src/main/java/net/ys/dao/EtlDao.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/ys/controller/EtlController.java" />
         <option value="$PROJECT_DIR$/src/main/java/net/ys/utils/KettleUtil.java" />
+        <option value="$PROJECT_DIR$/trans.sql" />
       </list>
     </option>
   </component>
@@ -477,7 +491,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
@@ -617,6 +630,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="ProjectViewSettings">
@@ -941,7 +955,11 @@
       <created>1576553180151</created>
       <updated>1576553180151</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="添加对金仓etl的适配，目前适合etl，api传输暂时没有测试---从普通数据库到金仓数据库传输">
+      <created>1576562215693</created>
+      <updated>1576562215693</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TodoView" selected-index="0">
@@ -978,7 +996,7 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.18463181" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.16542156" sideWeight="0.8301676" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.16542156" sideWeight="0.824581" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32960895" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1025,7 +1043,7 @@
     <option name="MAXIMUM_HISTORY_ROWS" value="1000" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="添加对金仓etl的适配，目前适合etl，api传输暂时没有测试" />
+    <option name="LAST_COMMIT_MESSAGE" value="添加对金仓etl的适配，目前适合etl，api传输暂时没有测试---从普通数据库到金仓数据库传输" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -1042,6 +1060,7 @@
     <MESSAGE value="update 修复了一个srcField对应多个desField的bug" />
     <MESSAGE value="修改映射表的编辑页面，实现根据任务类型选择填写相应内容" />
     <MESSAGE value="添加对金仓etl的适配，目前适合etl，api传输暂时没有测试" />
+    <MESSAGE value="添加对金仓etl的适配，目前适合etl，api传输暂时没有测试---从普通数据库到金仓数据库传输" />
   </component>
   <component name="VssConfiguration">
     <CheckoutOptions>
@@ -1103,13 +1122,6 @@
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/net/ys/dao/DbDao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="25" column="102" selection-start="782" selection-end="782" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/config.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state line="9" column="32" selection-start="251" selection-end="251" vertical-scroll-proportion="0.0" />
@@ -1155,7 +1167,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/ys/utils/DBUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="544" column="0" selection-start="22565" selection-end="22565" vertical-scroll-proportion="0.3305509" />
+        <state line="544" column="0" selection-start="22565" selection-end="22565" vertical-scroll-proportion="0.3305509">
+          <folding>
+            <element signature="e#9463#9472#0" expanded="true" />
+            <element signature="e#11353#11362#0" expanded="true" />
+            <element signature="e#19966#19975#0" expanded="true" />
+            <element signature="e#22033#22042#0" expanded="true" />
+          </folding>
+        </state>
       </provider>
     </entry>
     <entry file="jar://D:/Java/jdk1.8.0_91/src.zip!/java/lang/Thread.java">
@@ -1207,7 +1226,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/net/ys/utils/KettleUtil.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="0" selection-start="4641" selection-end="4641" vertical-scroll-proportion="-0.071633235">
+        <state line="35" column="13" selection-start="1192" selection-end="1192" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/trans.sql">
+      <provider editor-type-id="com.intellij.persistence.database.editor.CsvTableFileEditorProvider">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="8" column="29" selection-start="197" selection-end="197" vertical-scroll-proportion="0.33500838">
           <folding />
         </state>
       </provider>
