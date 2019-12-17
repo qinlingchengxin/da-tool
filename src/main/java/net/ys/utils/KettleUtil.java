@@ -128,6 +128,10 @@ public class KettleUtil {
             String insertUpdateMetaPluginId = registry.getPluginId(StepPluginType.class, insertUpdateMeta);
             DatabaseMeta desDb = transMeta.findDatabase("des_db");
             insertUpdateMeta.setDatabaseMeta(desDb);
+
+            if (bdtI == DbType.KING_BASE.type) {
+                insertUpdateMeta.setSchemaName(dbSchema.get("des_db_schema"));
+            }
             insertUpdateMeta.setTableName(entity.getDesTabName());
             insertUpdateMeta.setCommitSize("10000");
 
